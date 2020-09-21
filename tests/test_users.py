@@ -23,7 +23,7 @@ class UserTestCase(TestCase):
     def setUp(self):
         """Add sample user."""
 
-        User.query.delete()
+        # User.query.delete()
 
         user1 = User(first_name="Bob", last_name="Evans",
                      image_url="https://static.tvtropes.org/pmwiki/pub/images/AverageMan1.jpg")
@@ -48,6 +48,7 @@ class UserTestCase(TestCase):
         db.session.rollback()
 
     def test_list_users(self):
+        """Tests that user list renders successfully"""
         with app.test_client() as client:
             resp = client.get("/users")
             html = resp.get_data(as_text=True)
@@ -59,6 +60,7 @@ class UserTestCase(TestCase):
             self.assertIn('Jordan Brooks', html)
 
     def test_user_details(self):
+        """Tests that user details are successfully created"""
         with app.test_client() as client:
             resp = client.get(f"/users/{self.user2.id}")
             html = resp.get_data(as_text=True)
@@ -71,6 +73,7 @@ class UserTestCase(TestCase):
                 'https://plumepoetry.com/wp-content/uploads/2019/12/default-profile.png', html)
 
     def test_edit_user(self):
+        """Tests that user edit form is successfully rendered"""
         with app.test_client() as client:
             resp = client.get(f"/users/{self.user1.id}/edit")
             html = resp.get_data(as_text=True)
@@ -85,21 +88,7 @@ class UserTestCase(TestCase):
                 'https://static.tvtropes.org/pmwiki/pub/images/AverageMan1.jpg', html)
 
     def test_edit_user_submit(self):
-        with app.test_client() as client:
-
-            d = {'first_name': 'Jordie', 'last_name': 'Brink',
-                 'image_url': 'https://static.tvtropes.org/pmwiki/pub/images/AverageMan1.jpg'}
-
-            resp = client.post(
-                f"/users/{self.user3.id}/edit", data=d, follow_redirects=True)
-            html = resp.get_data(as_text=True)
-
-            self.assertEqual(resp.status_code, 200)
-
-            self.assertIn('Jordie', html)
-            self.assertIn('Brink', html)
-
-    def test_edit_user_submit(self):
+        """Tests that user edit is submitted successfully"""
         with app.test_client() as client:
 
             d = {'first_name': 'Jordie', 'last_name': 'Brink',
@@ -120,6 +109,7 @@ class UserTestCase(TestCase):
             self.assertIn(self.user3.last_name, html)
 
     def test_create_user(self):
+        """Tests that user creation form is successfully rendered"""
         with app.test_client() as client:
             resp = client.get(f"/users/new")
             html = resp.get_data(as_text=True)
@@ -128,6 +118,7 @@ class UserTestCase(TestCase):
             self.assertIn('<h1 class="my-4">Create a User</h1>', html)
 
     def test_create_user_submit(self):
+        """Tests that user creation is submitted successfully"""
         with app.test_client() as client:
 
             d = {'first_name': 'Haley', 'last_name': 'Peterson', 'image_url': ''}
@@ -144,34 +135,3 @@ class UserTestCase(TestCase):
             self.assertIn(user4.last_name, html)
             self.assertEquals(
                 user4.image_url, 'https://plumepoetry.com/wp-content/uploads/2019/12/default-profile.png')
-
-    def test_create_post_page(self):
-        with app.test_client() as client:
-            resp = client.get(f"/users/{self.user1.id}/posts/new")
-            html = resp.get_data(as_text=True)
-
-            self.assertEqual(resp.status_code, 200)
-            self.assertIn(
-                f'<h1 class="my-4">Add Post for {self.user1.first_name} {self.user1.last_name}</h1>', html)
-
-    def test_create_tag_page(self):
-        with app.test_client() as client:
-            resp = client.get(f"/tags/new")
-            html = resp.get_data(as_text=True)
-
-            self.assertEqual(resp.status_code, 200)
-            self.assertIn('<h1 class="my-4">Create a tag</h1>', html)
-
-    def test_create_tag_submit(self):
-        with app.test_client() as client:
-
-            d = {'tag_name': 'test-tag'}
-
-            resp = client.post(
-                "/tags/new", data=d, follow_redirects=True)
-            html = resp.get_data(as_text=True)
-
-            self.assertEqual(resp.status_code, 200)
-            self.assertIn('test-tag', html)
-            self.assertEqual(
-                'test-tag', Tag.query.filter(Tag.name == 'test-tag').first().name)

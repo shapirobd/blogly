@@ -1,0 +1,35 @@
+{% extends "/users/base.html" %} {% block title %}{{user.first_name}}
+{{user.last_name}}{% endblock %} {% block content %}
+<div class="container p-3">
+	<div class="row justify-content-center">
+		<div class="col-6">
+			<div class="row">
+				<h1>{{post.title}}</h1>
+			</div>
+			<div class="row my-2">
+				<p>{{post.content}}</p>
+			</div>
+			<div class="row my-2">
+				<i>By {{user.first_name}} {{user.last_name}}</i>
+			</div>
+			<div class="row my-2 align-items-center">
+				<h6 class="mr-2"><b>Tags:</b></h6>
+				{% for tag in tags %}
+				<span class="badge badge-primary mr-2"><i>{{tag.name}}</i></span>
+				{% endfor %}
+			</div>
+			<div class="row">
+				<form class="mx-2" action="/users/{{user.id}}">
+					<button class="btn btn-outline-primary">Cancel</button>
+				</form>
+				<form class="mx-2" action="/posts/{{post.id}}/edit">
+					<button class="btn btn-primary">Edit</button>
+				</form>
+				<form class="mx-2" action="/posts/{{post.id}}/delete" method="POST">
+					<button class="btn btn-danger">Delete</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

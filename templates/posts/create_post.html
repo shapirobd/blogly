@@ -1,0 +1,43 @@
+{% extends "/users/base.html" %} {% block title %}Create a User{% endblock %} {%
+block content %}
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col col-7">
+			<h1 class="my-4">Add Post for {{user.first_name}} {{user.last_name}}</h1>
+			<form method="POST">
+				<div class="row my-3">
+					<label for="title">Title</label>
+					<input class="col col-7 mx-2" type="text" name="title" />
+				</div>
+				<div class="row my-3">
+					<label for="content">Content</label>
+					<textarea
+						class="col col-7 mx-2"
+						type="textbox"
+						name="content"
+					></textarea>
+				</div>
+				{% for tag in tags %}
+				<div class="row">
+					<div class="custom-control custom-checkbox">
+						<input
+							type="checkbox"
+							class="custom-control-input"
+							id="{{tag.name}}"
+							name="{{tag.name}}"
+						/>
+						<label class="custom-control-label" for="{{tag.name}}"
+							>{{tag.name}}</label
+						>
+					</div>
+				</div>
+				{% endfor %}
+				<div class="row my-3 justify-content-end">
+					<button class="btn btn-info">Cancel</button>
+					<button class="btn btn-success">Add</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

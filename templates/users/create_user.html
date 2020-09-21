@@ -1,0 +1,42 @@
+{% extends "/users/base.html" %} {% block title %}Create a User{% endblock %} {%
+block content %}
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col col-9">
+			<h1 class="my-4">Create a User</h1>
+			<form method="POST">
+				<div class="row my-3">
+					<label for="first_name">First Name</label>
+					<input
+						class="col-6 mx-2"
+						type="text"
+						name="first_name"
+						placeholder="Enter a first name"
+					/>
+				</div>
+				<div class="row my-3">
+					<label for="last_name">Last Name</label>
+					<input
+						class="col-6 mx-2"
+						type="text"
+						name="last_name"
+						placeholder="Enter a last name"
+					/>
+				</div>
+				<div class="row my-3">
+					<label for="image_url">Image URL</label>
+					<input
+						class="col-6 mx-2"
+						type="text"
+						name="image_url"
+						placeholder="Provide an image of this user"
+					/>
+				</div>
+				<div class="row my-3">
+					<button class="btn btn-success">Add</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "/users/base.html" %} {% block title %}Edit Tag{% endblock %} {%
+block content %}
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col col-7">
+			<h1 class="my-4">Edit a tag</h1>
+			<form method="POST">
+				<div class="row my-3">
+					<label for="tag_name">Name</label>
+					<input
+						class="col col-7 mx-2"
+						type="text"
+						name="tag_name"
+						value="{{tag.name}}"
+					/>
+				</div>
+				<div class="row my-3 justify-content-end">
+					<button class="btn btn-info mr-1" formaction="/tags">Cancel</button>
+					<button class="btn btn-success ml-1">Edit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "/users/base.html" %} {% block title %}Create a User{% endblock %} {%
+block content %}
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col col-7">
+			<h1 class="my-4">Create a tag</h1>
+			<form method="POST">
+				<div class="row my-3">
+					<label for="tag_name">Name</label>
+					<input class="col col-7 mx-2" type="text" name="tag_name" />
+				</div>
+				<div class="row my-3 justify-content-end">
+					<button class="btn btn-info" formaction="/tags">Cancel</button>
+					<button class="btn btn-success">Add</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

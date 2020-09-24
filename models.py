@@ -39,8 +39,7 @@ class Post(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    posttags = db.relationship("PostTag", backref="post",
-                               cascade="all, delete-orphan")
+    tags = db.relationship("Tag", secondary='posttags', backref="posts")
 
 
 class Tag(db.Model):
@@ -50,9 +49,6 @@ class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     name = db.Column(db.Text, nullable=False, unique=True)
-
-    posttags = db.relationship("PostTag", backref="tag",
-                               cascade="all, delete-orphan")
 
 
 class PostTag(db.Model):

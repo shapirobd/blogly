@@ -15,7 +15,11 @@
 			<div class="row my-2 align-items-center">
 				<h6 class="mr-2"><b>Tags:</b></h6>
 				{% for tag in tags %}
-				<span class="badge badge-primary mr-2"><i>{{tag.name}}</i></span>
+				<span class="badge badge-primary mr-2">
+					<a href="/tags/{{tag.id}}" style="color: white"
+						><i>{{tag.name}}</i></a
+					>
+				</span>
 				{% endfor %}
 			</div>
 			<div class="row">

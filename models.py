@@ -39,8 +39,6 @@ class Post(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    tags = db.relationship("Tag", secondary='posttags', backref="posts")
-
 
 class Tag(db.Model):
 
@@ -50,16 +48,23 @@ class Tag(db.Model):
 
     name = db.Column(db.Text, nullable=False, unique=True)
 
+    posts = db.relationship(
+        'Post',
+        secondary="posttags",
+        # cascade="all,delete",
+        backref="tags",
+    )
+
 
 class PostTag(db.Model):
 
     __tablename__ = 'posttags'
 
     tag_id = db.Column(db.Integer, db.ForeignKey(
-        'tags.id'), primary_key=True, nullable=False)
+        'tags.id'), primary_key=True)
 
     post_id = db.Column(db.Integer, db.ForeignKey(
-        'posts.id'), primary_key=True, nullable=False)
+        'posts.id'), primary_key=True)
 
 
 def connect_db(app):

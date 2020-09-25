@@ -56,7 +56,10 @@ def create_user():
 def show_user_info(user_id):
 
     user = User.query.get(user_id)
-    posts = Post.query.filter(Post.user_id == user_id).all()
+
+    posts = user.posts
+
+    # posts = Post.query.filter(Post.user_id == user_id).all()
     return render_template('/users/user_info.html', user=user, posts=posts)
 
 
@@ -120,13 +123,11 @@ def create_post(user_id):
     db.session.commit()
 
     for tag in tags:
-
         if request.form.get(f'{tag.name}'):
+            new_post.tags.append(tag)
 
-            new_postTag = PostTag(tag_id=tag.id, post_id=new_post.id)
-
-            db.session.add(new_postTag)
-            db.session.commit()
+    db.session.add(new_post)
+    db.session.commit()
 
     return redirect(f'/users/{user_id}')
 
@@ -137,10 +138,8 @@ def create_post(user_id):
 @app.route('/posts/<int:post_id>')
 def show_post(post_id):
     post = Post.query.get(post_id)
-    user = User.query.get(post.user_id)
-    postTags = PostTag.query.filter(PostTag.post_id == post_id).all()
-    tags = [Tag.query.get(postTag.tag_id)
-            for postTag in postTags if postTag.post_id == post.id]
+    user = post.user
+    tags = post.tags
 
     return render_template('/posts/post_info.html', post=post, user=user, tags=tags)
 
@@ -217,8 +216,7 @@ def show_tags():
 def tag_details(tag_id):
     tag = Tag.query.get(tag_id)
 
-    post_tags = PostTag.query.filter(tag_id == tag_id).all()
-    posts = [post_tag.post for post_tag in post_tags]
+    posts = tag.posts
 
     return render_template('/tags/show_tag.html', posts=posts, tag=tag)
 
@@ -265,7 +263,9 @@ def edit_tag(tag_id):
 # # """Delete a tag."""
 @app.route('/tags/<int:tag_id>/delete', methods=['POST'])
 def delete_tag(tag_id):
-    Tag.query.filter(Tag.id == tag_id).delete()
+    tag = Tag.query.get_or_404(tag_id)
+    db.session.delete(tag)
     db.session.commit()
+    flash(f"Tag '{tag.name}' deleted.")
 
-    return redirect('/tags')
+    return redirect("/tags")

@@ -32,11 +32,15 @@ def show_users():
     users = User.query.order_by(User.last_name, User.first_name).all()
     return render_template('/users/users.html', users=users)
 
+# render form to create a new user
+
 
 @app.route('/users/new', methods=['GET'])
 def show_create_user_form():
 
     return render_template('/users/create_user.html')
+
+# submit form to create a new user
 
 
 @app.route('/users/new', methods=['POST'])
@@ -118,9 +122,6 @@ def create_post(user_id):
         title=request.form['title'], content=request.form['content'], user_id=user_id)
 
     tags = Tag.query.all()
-
-    db.session.add(new_post)
-    db.session.commit()
 
     for tag in tags:
         if request.form.get(f'{tag.name}'):
